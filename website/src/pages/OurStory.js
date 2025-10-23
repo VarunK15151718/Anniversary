@@ -27,7 +27,7 @@ const OurStory = () => {
       side: "left"
     },
     {
-      date: "December 23, 2024",
+      date: "November 3, 2024",
       title: "A picture I'd always remember",
       description: "You were in Vapi, and so was my heart and soul alongside. The purple dress, your tied hair, the flying dupatta, your eyes, your hands, perfection is still just a mere word.",
       icon: "📸",
