@@ -9,6 +9,7 @@ const Gallery = () => {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   const categories = [
     { id: 'hot', name: 'Mrs Universe', icon: '🔥', color: '#FF6B6B' },
@@ -18,6 +19,9 @@ const Gallery = () => {
   ];
 
   const loadImages = useCallback(async () => {
+    // Only load images once
+    if (imagesLoaded) return;
+    
     setLoading(true);
     const imageData = {};
     
@@ -48,7 +52,8 @@ const Gallery = () => {
     
     setImages(imageData);
     setLoading(false);
-  }, [categories]);
+    setImagesLoaded(true);
+  }, [categories, imagesLoaded]);
 
   useEffect(() => {
     loadImages();
@@ -168,12 +173,12 @@ const Gallery = () => {
       <motion.div
         ref={cardRef}
         className={`image-card ${image.isSpecial ? 'special-card' : ''}`}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.02 }}
-      onClick={() => openLightbox(image)}
-    >
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.05 }}
+        whileHover={{ scale: 1.02 }}
+        onClick={() => openLightbox(image)}
+      >
       <div className="image-container">
         {loading ? (
           <div className="skeleton image-skeleton"></div>
@@ -249,15 +254,13 @@ const Gallery = () => {
       {/* Gallery Grid */}
       <section className="gallery-grid-section">
         <div className="gallery-container">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              className="gallery-grid"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
+          <motion.div
+            className="gallery-grid"
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
               {loading ? (
                 Array.from({ length: 6 }).map((_, index) => (
                   <div key={index} className="image-card">
@@ -277,8 +280,7 @@ const Gallery = () => {
                   </button>
                 </div>
               )}
-            </motion.div>
-          </AnimatePresence>
+          </motion.div>
         </div>
       </section>
 
