@@ -26,7 +26,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://yourusername.github.io/anniversary-final",
+  "homepage": "https://varunk15151718.github.io/Anniversary",
   "eslintConfig": {
     "extends": [
       "react-app",
