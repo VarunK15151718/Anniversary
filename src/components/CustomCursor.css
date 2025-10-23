@@ -1,0 +1,30 @@
+.cursor-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: #FFB6C1;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: all 0.1s ease;
+  box-shadow: 0 0 10px #FFB6C1, 0 0 20px #FFB6C1, 0 0 30px #FFB6C1;
+}
+
+.cursor-outline {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 182, 193, 0.3);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  backdrop-filter: blur(2px);
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .cursor-dot,
+  .cursor-outline {
+    display: none;
+  }
+}
