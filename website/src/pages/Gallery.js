@@ -4,6 +4,7 @@ import Lightbox from '../components/Lightbox';
 import './Gallery.css';
 
 const Gallery = () => {
+  console.log('Gallery component rendered');
   const [activeTab, setActiveTab] = useState('hot');
   const [images, setImages] = useState({});
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,8 @@ const Gallery = () => {
     setLoading(true);
     const imageData = {};
     
+    console.log('PUBLIC_URL:', process.env.PUBLIC_URL);
+    
     for (const category of categories) {
       imageData[category.id] = [];
       
@@ -33,27 +36,25 @@ const Gallery = () => {
         'hot': 10,
         'cute': 7, 
         'love': 7,
-        'weird': 6
+        'weird': 4  // Only 4 images in weird folder
       };
       
       const imageCount = imageCounts[category.id] || 6;
       
       for (let i = 1; i <= imageCount; i++) {
-        try {
-          const imageUrl = `${process.env.PUBLIC_URL}/${category.id}/${i}.jpg`;
-          imageData[category.id].push({
-            id: `${category.id}-${i}`,
-            src: imageUrl,
-            alt: `${category.name} photo ${i}`,
-            category: category.id,
-            isSpecial: category.id === 'hot' && i === 6 // Special styling for the boyfriend's photo (WhatsApp Image 2025-10-21 at 02.40.21.jpeg)
-          });
-        } catch (error) {
-          console.log(`Image ${category.id}/${i}.jpg not found`);
-        }
+        const imageUrl = `${process.env.PUBLIC_URL}/${category.id}/${i}.jpg`;
+        console.log(`Loading image: ${imageUrl}`);
+        imageData[category.id].push({
+          id: `${category.id}-${i}`,
+          src: imageUrl,
+          alt: `${category.name} photo ${i}`,
+          category: category.id,
+          isSpecial: category.id === 'hot' && i === 6 // Special styling for the boyfriend's photo (WhatsApp Image 2025-10-21 at 02.40.21.jpeg)
+        });
       }
     }
     
+    console.log('Loaded images:', imageData);
     setImages(imageData);
     setLoading(false);
   }, [categories]);
@@ -88,6 +89,12 @@ const Gallery = () => {
       setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight });
       setImageLoaded(true);
       setRowSpan(img);
+      console.log('Image loaded successfully:', img.src);
+    };
+    
+    const handleImageError = (e) => {
+      console.error('Image failed to load:', e.target.src);
+      setImageError(true);
     };
     
     useEffect(() => {}, [imageLoaded]);
@@ -184,7 +191,7 @@ const Gallery = () => {
                 alt={image.alt}
                 className={`gallery-image`}
                 onLoad={handleImageLoad}
-                onError={() => setImageError(true)}
+                onError={handleImageError}
                 style={{ display: imageLoaded && !imageError ? 'block' : 'none' }}
               />
               {(!imageLoaded || imageError) && (
@@ -264,10 +271,18 @@ const Gallery = () => {
                     <div className="skeleton image-skeleton"></div>
                   </div>
                 ))
-              ) : (
-                images[activeTab]?.map((image, index) => (
+              ) : images[activeTab] && images[activeTab].length > 0 ? (
+                images[activeTab].map((image, index) => (
                   <ImageCard key={image.id} image={image} index={index} />
                 ))
+              ) : (
+                <div className="no-images-message">
+                  <h3>No images found</h3>
+                  <p>There seems to be an issue loading the images. Please try refreshing the page.</p>
+                  <button onClick={() => window.location.reload()} className="refresh-btn">
+                    Refresh Page
+                  </button>
+                </div>
               )}
             </motion.div>
           </AnimatePresence>

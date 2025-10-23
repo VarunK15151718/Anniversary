@@ -3,6 +3,47 @@
   padding-top: 70px;
 }
 
+/* Error Message */
+.no-images-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #FFE5E5 0%, #FFCCCC 100%);
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.no-images-message h3 {
+  color: #D63384;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  font-family: 'Inter', sans-serif;
+}
+
+.no-images-message p {
+  color: #6C757D;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.refresh-btn {
+  background: linear-gradient(135deg, #D63384 0%, #E83E8C 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.refresh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(214, 51, 132, 0.3);
+}
+
 /* Hero Section */
 .gallery-hero {
   padding: 100px 20px 80px;
