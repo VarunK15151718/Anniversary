@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lightbox from '../components/Lightbox';
 import './Gallery.css';
@@ -19,9 +19,9 @@ const Gallery = () => {
 
   useEffect(() => {
     loadImages();
-  }, []);
+  }, [loadImages]);
 
-  const loadImages = async () => {
+  const loadImages = useCallback(async () => {
     setLoading(true);
     const imageData = {};
     
@@ -56,7 +56,7 @@ const Gallery = () => {
     
     setImages(imageData);
     setLoading(false);
-  };
+  }, [categories]);
 
   const openLightbox = (image) => {
     setSelectedImage(image);
@@ -71,7 +71,7 @@ const Gallery = () => {
   const ImageCard = ({ image, index }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [imageError, setImageError] = useState(false);
-    const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+    const [, setImageDimensions] = useState({ width: 0, height: 0 });
     const cardRef = useRef(null);
     
     // Reset states when image changes

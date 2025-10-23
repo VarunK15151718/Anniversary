@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Confetti from '../components/Confetti';
 import './Surprise.css';
@@ -6,7 +6,7 @@ import './Surprise.css';
 const Surprise = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [selectedSurprise, setSelectedSurprise] = useState(null);
-  const [konamiCode, setKonamiCode] = useState([]);
+  const [, setKonamiCode] = useState([]);
   const [showHeartExplosion, setShowHeartExplosion] = useState(false);
 
   const surprises = [
@@ -93,7 +93,7 @@ const Surprise = () => {
     return nextAnniversary;
   };
 
-  const getTimeUntilNextAnniversary = () => {
+  const getTimeUntilNextAnniversary = useCallback(() => {
     const now = new Date();
     const nextAnniversary = getNextAnniversaryDate();
     const timeDiff = nextAnniversary - now;
@@ -104,7 +104,7 @@ const Surprise = () => {
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
     
     return { days, hours, minutes, seconds };
-  };
+  }, []);
 
   const [timeLeft, setTimeLeft] = useState(getTimeUntilNextAnniversary());
 
@@ -113,7 +113,7 @@ const Surprise = () => {
       setTimeLeft(getTimeUntilNextAnniversary());
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [getTimeUntilNextAnniversary]);
 
   const getRandomLoveReason = () => {
     return loveReasons[Math.floor(Math.random() * loveReasons.length)];

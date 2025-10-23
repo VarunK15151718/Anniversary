@@ -26,7 +26,7 @@ const Lightbox = ({ image, onClose, images }) => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'unset';
     };
-  }, [currentIndex]);
+  }, [currentIndex, onClose, goToNext, goToPrevious]);
 
   const goToPrevious = () => {
     if (images && images.length > 0) {
