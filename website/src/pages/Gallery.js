@@ -4,7 +4,6 @@ import Lightbox from '../components/Lightbox';
 import './Gallery.css';
 
 const Gallery = () => {
-  console.log('Gallery component rendered');
   const [activeTab, setActiveTab] = useState('hot');
   const [images, setImages] = useState({});
   const [loading, setLoading] = useState(true);
@@ -18,15 +17,9 @@ const Gallery = () => {
     { id: 'weird', name: 'Bakchod', icon: '🤪', color: '#9370DB' }
   ];
 
-  useEffect(() => {
-    loadImages();
-  }, [loadImages]);
-
   const loadImages = useCallback(async () => {
     setLoading(true);
     const imageData = {};
-    
-    console.log('PUBLIC_URL:', process.env.PUBLIC_URL);
     
     for (const category of categories) {
       imageData[category.id] = [];
@@ -43,7 +36,6 @@ const Gallery = () => {
       
       for (let i = 1; i <= imageCount; i++) {
         const imageUrl = `${process.env.PUBLIC_URL}/${category.id}/${i}.jpg`;
-        console.log(`Loading image: ${imageUrl}`);
         imageData[category.id].push({
           id: `${category.id}-${i}`,
           src: imageUrl,
@@ -54,10 +46,13 @@ const Gallery = () => {
       }
     }
     
-    console.log('Loaded images:', imageData);
     setImages(imageData);
     setLoading(false);
   }, [categories]);
+
+  useEffect(() => {
+    loadImages();
+  }, [loadImages]);
 
   const openLightbox = (image) => {
     setSelectedImage(image);
@@ -89,11 +84,9 @@ const Gallery = () => {
       setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight });
       setImageLoaded(true);
       setRowSpan(img);
-      console.log('Image loaded successfully:', img.src);
     };
     
     const handleImageError = (e) => {
-      console.error('Image failed to load:', e.target.src);
       setImageError(true);
     };
     
